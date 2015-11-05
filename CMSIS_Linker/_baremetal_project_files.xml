@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<wizardExtension loadOrder="2000">
+  <newProjectExtension>
+        <variables>
+            <enumeratedVariable
+                  name="main_c_bareproject_warning">
+               <enumeratedValue
+                     conditionId="com.processorexpert.condition.ilg.gnuarmeclipse.nostartupfiles.baremetal"
+                     value="&#13;#warning Because RAM size of this device is not enough to fit in the heap requirements of newlib/newlib-nano, startup code is by-passed!">
+               </enumeratedValue>
+               <enumeratedValue
+                     conditionId="com.processorexpert.condition.true"
+                     value="">
+               </enumeratedValue>
+            </enumeratedVariable>
+        </variables>
+  
+        <buildSettings>
+            <!-- Atollic -->
+            <settingsGroup 
+               id="com.processorexpert.create.atollic.toolchain.settings.baremetal"
+               conditionId="com.processorexpert.condition.projecttype.baremetal">
+                   <applySetting
+                            id="com.atollic.truestudio.gcc.directories.select"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Sources"/>
+	                     <listValue value="../Includes"/>
+                   </applySetting>
+            </settingsGroup>
+        
+            <!-- IAR -->
+            <settingsGroup 
+               id="com.processorexpert.create.iar.toolchain.settings.baremetal"
+               conditionId="com.processorexpert.condition.projecttype.baremetal">
+                   <applySetting
+                            id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Sources"/>
+	                     <listValue value="../Includes"/>
+                   </applySetting>
+            </settingsGroup>
+        
+            <!-- GNU ARM -->
+				<settingsGroup 
+				   id="com.processorexpert.create.gnuarm.toolchain.settings.baremetal"
+				   conditionId="com.processorexpert.condition.projecttype.baremetal">
+				       <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Sources"/>
+	                     <listValue value="../Includes"/>
+				       </applySetting>
+				       <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Sources"/>
+	                     <listValue value="../Includes"/>
+				       </applySetting>
+				       <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other"
+                            value="${com.processorexpert.ilg.gnuarmeclipse.linker.library}"
+                            type="string">
+				       </applySetting>
+				       <settingsGroupRef
+                             id="com.processorexpert.create.gnuarm.toolchain.settings.baremetal.linker.flash">
+				       </settingsGroupRef>
+				       <settingsGroupRef
+                             id="com.processorexpert.create.gnuarm.toolchain.settings.baremetal.linker.ram">
+				       </settingsGroupRef>
+                   <settingsGroup
+                     id="com.processorexpert.create.gnuarm.toolchain.settings.baremetal.linker.nostartupfiles.baremetal"
+   				      conditionId="com.processorexpert.condition.ilg.gnuarmeclipse.nostartupfiles.baremetal">
+  				            <applySetting
+                              id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.nostart"
+                              value="true"
+                              type="boolean">
+  				            </applySetting>
+  				            <applySetting
+                              id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs"
+                              mode="append"
+                              type="quotedStringList">
+  				                <listValue value="__START=main"/>
+  				                <listValue value="__STARTUP_CLEAR_BSS"/>
+  				            </applySetting>
+                   </settingsGroup>
+				</settingsGroup>
+				<settingsGroup 
+				   id="com.processorexpert.create.gnuarm.toolchain.settings.baremetal.linker.flash"
+				   conditionId="com.processorexpert.condition.projecttype.baremetal">
+                       <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue
+	                           value="${Processor}_flash.ld"/>
+                       </applySetting>
+				</settingsGroup>
+				<settingsGroup 
+				   id="com.processorexpert.create.gnuarm.toolchain.settings.baremetal.linker.ram"
+				   conditionId="com.processorexpert.condition.false">
+                       <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue
+	                           value="${kinetis_linker_ram}"/>
+                       </applySetting>
+				</settingsGroup>
+        </buildSettings>
+
+        <projectFiles>
+            <fileGroup
+                    conditionId="com.processorexpert.condition.projecttype.baremetal">
+	             <createFolder destinationPath="./Sources" />
+	             <createFolder destinationPath="./Project_Settings" />
+	             <createFolder destinationPath="./Project_Settings/Startup_Code" />
+	             <createFolder destinationPath="./Project_Settings/Debugger" />
+	             <copyFile
+                        destinationPath="./Sources/main.c"
+                        fileId="com.processorexpert.projectwizard.baremetal.main.c"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/sources/main.c">
+                     <findReplace
+                           find="/*$WARNING_NOSTARTUP_FILES$*/"
+                           replaceWith="${main_c_bareproject_warning}">
+                     </findReplace>
+                     <findReplace
+                           find="$bare_header$"
+                           replaceWith="${BarePlatform}.h">
+                     </findReplace>
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Includes/${BarePlatform}.h"
+                        fileId="com.processorexpert.projectwizard.system.c"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/${BarePlatform}/Include/${BarePlatform}.h">
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Project_Settings/Startup_Code/system_${BarePlatform}.c"
+                        fileId="com.processorexpert.projectwizard.system.c"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/${BarePlatform}/Source/Templates/system_${BarePlatform}.c">
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Includes/system_${BarePlatform}.h"
+                        fileId="com.processorexpert.projectwizard.system.h"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/${BarePlatform}/Include/system_${BarePlatform}.h">
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Project_Settings/Startup_Code/startup_${BarePlatform}.S"
+                        fileId="com.processorexpert.projectwizard.startup.s"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/${BarePlatform}/Source/Templates/gcc/startup_${BarePlatform}.S">
+	             </copyFile>
+                <copyFile
+                        destinationPath="./Project_Settings/Linker_Files/${Processor}_flash.ld"
+                        fileId="com.processorexpert.projectwizard.linker.flash"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/${BarePlatform}/Source/Templates/gcc/${Processor}_flash.ld">
+                </copyFile>
+                <!-- CMSIS -->
+                <copyFile
+                        destinationPath="./Includes/core_cm0plus.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cm0plus.h"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/includes/core_cm0plus.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cm4.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cm4.h"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/includes/core_cm4.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cm4_simd.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cm4_simd.h"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/includes/core_cm4_simd.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cmFunc.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cmFunc.h"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/includes/core_cmFunc.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cmInstr.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cmInstr.h"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/includes/core_cmInstr.h">
+                </copyFile>
+            </fileGroup>
+        </projectFiles>
+
+            <configurationFileSets>
+	            <fileSet
+	                  id="com.processorexpert.projectWizard.baremetal.files">
+	                  <fileRef
+	                        path="./Sources/main.c">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Startup_Code/system_${BarePlatform}.c">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/system_${BarePlatform}.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Startup_Code/startup_${BarePlatform}.S">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Linker_Files/${Processor}_flash.ld">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/${BarePlatform}.h">
+	                  </fileRef>
+	                  <!-- CMSIS -->
+	                  <fileRef
+	                        path="./Includes/core_cm0plus.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cm4.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cm4_simd.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cmFunc.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cmInstr.h">
+	                  </fileRef>
+	            </fileSet>
+            </configurationFileSets>
+
+    </newProjectExtension>
+</wizardExtension>

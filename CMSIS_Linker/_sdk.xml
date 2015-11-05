@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<wizardExtension loadOrder="2000">
+  <newProjectExtension>
+    <variables>
+           <!-- KDS specific -->
+
+           <!-- where SDK is located for NPW -->
+	        <variable
+	            name="sdk_base_path" 
+	            value="${com.processorexpert.sdkpath.evaluated}">
+	        </variable>
+
+           <!-- where SDK is for compiler options - user value is here: ${com.processorexpert.sdkpath} -->
+	        <variable
+	            name="sdk_project_base_path" 
+	            value="${unevaluated:PROJECT_KSDK_PATH}">
+	        </variable>
+           
+            <!-- temporary variable for KDS 1.1.0 update 1 - should be deleted for next release also the kds plugin.xml should be updated too -->
+            <enumeratedVariable
+                  name="com.processorexpert.ilg.gnuarmeclipse.linker.library">
+               <enumeratedValue
+                     conditionId="com.processorexpert.condition.ilg.gnuarmeclipse.dont.use.nanolib"
+                     value="">
+               </enumeratedValue>
+               <enumeratedValue
+                     conditionId="com.processorexpert.condition.ilg.gnuarmeclipse.nostartupfiles.baremetal"
+                     value="">
+               </enumeratedValue>
+               <enumeratedValue
+                     conditionId="com.processorexpert.condition.true"
+                     value="-specs=nano.specs -specs=nosys.specs">
+               </enumeratedValue>
+            </enumeratedVariable>
+    </variables>
+  </newProjectExtension>
+
+  <uiExtension>
+    <pages>
+    </pages>
+
+    <conditions>
+         <!-- condition for KDS product only -->
+         <condition
+               id="com.processorexpert.condition.kds.npw">
+               <or> <conditionRef conditionId="com.processorexpert.condition.true" /> </or>
+         </condition>
+         
+         <!-- launch configurations enablement -->
+         <condition
+            id="com.processorexpert.condition.launch.gnuarm.gdb.openocd">
+            <or>
+               <conditionRef conditionId="com.processorexpert.condition.true" />
+            </or>
+         </condition>
+         <condition
+            id="com.processorexpert.condition.launch.gnuarm.gdb.pne">
+            <or>
+               <conditionRef conditionId="com.processorexpert.condition.true" />
+            </or>
+         </condition>
+         <condition
+            id="com.processorexpert.condition.launch.gnuarm.gdb.segger">
+            <or>
+               <conditionRef conditionId="com.processorexpert.condition.true" />
+            </or>
+         </condition>
+         
+         <!--  do not enable PEx when -->
+         <condition
+               id="com.processorexpert.condition.peApplicable.pePE">
+            <and>
+                <conditionRef conditionId="com.processorexpert.condition.peSupported"/>
+                <not>
+                   <and>
+                      <conditionRef conditionId="com.processorexpert.condition.sdk.disabled" />
+                      <conditionRef conditionId="com.processorexpert.condition.sdkproject.only" />
+                   </and>
+                </not>
+                <!-- uncomment for KDS 1.2
+                <not>
+                   <and>
+                      <conditionRef conditionId="com.processorexpert.condition.sdk.enabled" />
+                      <not> 
+                         <conditionRef conditionId="com.processorexpert.condition.sdkproject.peSupported" />
+                      </not>
+                   </and>
+                </not>
+                -->
+            </and>
+         </condition>
+         <!-- extra condition that can be overriden in KDS to ignore the sdkproject.only -->
+         <condition
+               id="com.processorexpert.condition.sdkproject.only.enablement.ignore">
+               <or> <conditionRef conditionId="com.processorexpert.condition.true" /> </or>
+         </condition>
+
+         <!-- turn on SDK support. By default is not enabled for legacy reasons -->
+         <!-- condition
+               id="com.processorexpert.condition.sdkproject.global.enablement">
+               <or> <conditionRef conditionId="com.processorexpert.condition.true" /> </or>
+         </condition-->
+         <!-- project types without PEx SDK or Nothing (baremetal) -->
+         <condition
+               id="com.processorexpert.condition.projecttype.sdk">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.sdk.enabled"/>
+              <conditionRef conditionId="com.processorexpert.condition.peNone"/>
+           </and>
+         </condition>
+         <condition
+               id="com.processorexpert.condition.projecttype.baremetal">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.sdk.disabled"/>
+              <conditionRef conditionId="com.processorexpert.condition.peNone"/>
+           </and>
+         </condition>
+         <!-- sdk manifest -->
+         <condition
+               id="com.processorexpert.condition.sdk.manifest.1.0">
+           <variableEquals
+                 first="1.0"
+                 last="${dynamic:com.processorexpert.sdk.manifest.version}">
+           </variableEquals>
+         </condition>
+         <condition
+               id="com.processorexpert.condition.sdk.manifest.1.1">
+           <variableEquals
+                 first="1.1"
+                 last="${dynamic:com.processorexpert.sdk.manifest.version}">
+           </variableEquals>
+         </condition>
+         <condition
+               id="com.processorexpert.condition.sdk.manifest.1.2">
+           <variableEquals
+                 first="1.2"
+                 last="${dynamic:com.processorexpert.sdk.manifest.version}">
+           </variableEquals>
+         </condition>
+         <condition
+               id="com.processorexpert.condition.projecttype.sdk.oldmanifest">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.projecttype.sdk"/>
+              <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.1.0"/>
+           </and>
+         </condition>
+         <condition
+               id="com.processorexpert.condition.projecttype.sdk.manifest.driven">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.projecttype.sdk"/>
+              <not>
+                 <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.1.0"/>
+              </not>
+           </and>
+         </condition>
+         <!-- from 1.2 the toolchains are configured from KSDK manifest - for SDK projects inlcuding SDK+PEx -->
+         <condition
+               id="com.processorexpert.condition.sdk.manifest.driven.toolchain">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.sdk.enabled"/>
+              <not>
+                 <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.1.0"/>
+                 <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.1.1"/>
+              </not>
+           </and>
+         </condition>
+         <condition
+               id="com.processorexpert.condition.projecttype.sdk.manifest.driven.toolchain">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.projecttype.sdk"/>
+              <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.driven.toolchain"/>
+           </and>
+         </condition>
+         <!-- configure toolchains for KSDK projects based on 1.0 and 1.1 the old way -->
+         <condition
+               id="com.processorexpert.condition.projecttype.sdk.legacy.toolchain">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.projecttype.sdk"/>
+              <or>
+                 <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.1.0"/>
+                 <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.1.1"/>
+              </or>
+           </and>
+         </condition>
+         <!-- Override from _pages.xml -->
+         <condition
+               id="com.processorexpert.condition.isPEProject.configure.toolchain">
+           <and>
+              <conditionRef conditionId="com.processorexpert.condition.isPEProject"/>
+              <or>
+                 <not>
+                    <conditionRef conditionId="com.processorexpert.condition.sdk.enabled"/>
+                 </not>
+                 <and>
+                   <conditionRef conditionId="com.processorexpert.condition.sdk.enabled"/>
+                   <not>
+                      <conditionRef conditionId="com.processorexpert.condition.sdk.manifest.driven.toolchain"/>
+                   </not>
+                 </and>
+              </or>
+           </and>
+         </condition>
+    </conditions>
+  </uiExtension>
+</wizardExtension>

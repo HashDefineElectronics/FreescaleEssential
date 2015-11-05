@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<wizardExtension loadOrder="2000">
+  <newProjectExtension>
+        <buildSettings>
+            <!-- Atollic -->
+            <settingsGroup 
+               id="com.processorexpert.create.atollic.toolchain.settings.sdk"
+               conditionId="com.processorexpert.condition.projecttype.sdk">
+               <applySetting
+                        id="com.atollic.truestudio.gcc.directories.select"
+                        mode="append"
+                        type="quotedStringList">
+                   <listValue value="../Sources"/>
+                   <listValue value="../Project_Settings/Startup_Code"/>
+               </applySetting>
+               <!-- settings when old manifets is used -->
+               <settingsGroup 
+                 id="com.processorexpert.create.atollic.toolchain.settings.sdk.oldmanifest"
+                 conditionId="com.processorexpert.condition.projecttype.sdk.oldmanifest">
+                   <applySetting
+                            id="com.atollic.truestudio.gcc.directories.select"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Includes"/>
+	                     <listValue value="../Includes/device"/>
+	                     <listValue value="${sdk_project_base_path}/platform/CMSIS/Include"/>
+	                     <listValue value="${sdk_project_base_path}/platform/utilities"/>
+                   </applySetting>
+                   <settingsGroupRef
+                         id="com.processorexpert.create.atollic.toolchain.settings.sdk.linker.flash">
+                   </settingsGroupRef>
+                   <settingsGroupRef
+                         id="com.processorexpert.create.atollic.toolchain.settings.sdk.linker.ram">
+                   </settingsGroupRef>
+               </settingsGroup>
+            </settingsGroup>
+            <settingsGroup 
+                id="com.processorexpert.create.atollic.toolchain.settings.sdk.linker.flash"
+                conditionId="com.processorexpert.condition.projecttype.sdk">
+                   <applySetting
+                        id="com.atollic.truestudio.ldcc.general.scriptfile"
+                        type="string"
+                        value="${SdkLinkerFlash}">
+                   </applySetting>
+            </settingsGroup>
+        
+            <!-- IAR -->
+            <settingsGroup 
+               id="com.processorexpert.create.iar.toolchain.settings.sdk"
+               conditionId="com.processorexpert.condition.projecttype.sdk">
+               <applySetting
+                        id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0"
+                        mode="append"
+                        type="quotedStringList">
+                   <listValue value="../Sources"/>
+                   <listValue value="../Project_Settings/Startup_Code"/>
+               </applySetting>
+               <!-- settings when old manifets is used -->
+               <settingsGroup 
+                 id="com.processorexpert.create.iar.toolchain.settings.sdk.oldmanifest"
+                 conditionId="com.processorexpert.condition.projecttype.sdk.oldmanifest">
+                   <applySetting
+                            id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Includes"/>
+	                     <listValue value="../Includes/device"/>
+	                     <listValue value="${sdk_project_base_path}/platform/CMSIS/Include"/>
+	                     <listValue value="${sdk_project_base_path}/platform/utilities"/>
+                   </applySetting>
+                   <settingsGroupRef
+                         id="com.processorexpert.create.iar.toolchain.settings.sdk.linker.flash">
+                   </settingsGroupRef>
+                   <settingsGroupRef
+                         id="com.processorexpert.create.iar.toolchain.settings.sdk.linker.ram">
+                   </settingsGroupRef>
+               </settingsGroup>
+            </settingsGroup>
+            <settingsGroup 
+                id="com.processorexpert.create.iar.toolchain.settings.sdk.linker.flash"
+                conditionId="com.processorexpert.condition.projecttype.sdk">
+                   <applySetting
+                        id="iar.arm.toolchain.linker.option.icfFile.v5.4.0"
+                        type="string"
+                        value="${SdkLinkerFlash}">
+                   </applySetting>
+            </settingsGroup>
+        
+            <!-- GNU ARM -->
+            <settingsGroup 
+               id="com.processorexpert.create.gnuarm.toolchain.settings.sdk"
+               conditionId="com.processorexpert.condition.projecttype.sdk">
+               <applySetting
+                        id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths"
+                        mode="append"
+                        type="quotedStringList">
+                   <listValue value="../Sources"/>
+                   <listValue value="../Project_Settings/Startup_Code"/>
+               </applySetting>
+               <applySetting
+                        id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths"
+                        mode="append"
+                        type="quotedStringList">
+                   <listValue value="../Sources"/>
+                   <listValue value="../Project_Settings/Startup_Code"/>
+               </applySetting>
+               <applySetting
+                        id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other"
+                        value="${com.processorexpert.ilg.gnuarmeclipse.linker.library}"
+                        type="string">
+               </applySetting>
+
+               <!-- settings when old manifets is used -->
+               <settingsGroup 
+                 id="com.processorexpert.create.gnuarm.toolchain.settings.sdk.oldmanifest"
+                 conditionId="com.processorexpert.condition.projecttype.sdk.oldmanifest">
+                   <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Includes"/>
+	                     <listValue value="../Includes/device"/>
+	                     <listValue value="${sdk_project_base_path}/platform/CMSIS/Include"/>
+	                     <listValue value="${sdk_project_base_path}/platform/utilities"/>
+                   </applySetting>
+                   <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue value="../Includes"/>
+	                     <listValue value="../Includes/device"/>
+	                     <listValue value="${sdk_project_base_path}/platform/CMSIS/Include"/>
+	                     <listValue value="${sdk_project_base_path}/platform/utilities"/>
+                   </applySetting>
+                   <settingsGroupRef
+                         id="com.processorexpert.create.gnuarm.toolchain.settings.sdk.linker.flash">
+                   </settingsGroupRef>
+                   <settingsGroupRef
+                         id="com.processorexpert.create.gnuarm.toolchain.settings.sdk.linker.ram">
+                   </settingsGroupRef>
+   				</settingsGroup>
+				</settingsGroup>
+				<settingsGroup 
+				   id="com.processorexpert.create.gnuarm.toolchain.settings.sdk.linker.flash"
+				   conditionId="com.processorexpert.condition.projecttype.sdk">
+                       <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue
+	                           value="${SdkLinkerFlash}"/>
+                       </applySetting>
+				</settingsGroup>
+            <settingsGroup 
+				   id="com.processorexpert.create.gnuarm.toolchain.settings.sdk.linker.ram"
+				   conditionId="com.processorexpert.condition.false">
+                       <applySetting
+                            id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile"
+                            mode="append"
+                            type="quotedStringList">
+	                     <listValue
+	                           value="${SdkLinkerRam}"/>
+                       </applySetting>
+            </settingsGroup>
+        </buildSettings>
+        
+        <projectFiles>
+            <fileGroup
+                    conditionId="com.processorexpert.condition.projecttype.sdk">
+	             <createFolder destinationPath="./Sources" />
+	             <createFolder destinationPath="./Project_Settings" />
+	             <createFolder destinationPath="./Project_Settings/Startup_Code" />
+	             <createFolder destinationPath="./Project_Settings/Debugger" />	             
+	             <createFolder destinationPath="./Project_Settings/Linker_Files" />
+	             <copyFile
+                        destinationPath="./Sources/main.c"
+                        fileId="com.processorexpert.projectwizard.sdk.main.c"
+                        sourcePath="${eclipse:${ProcessorExpertPath}}/Config/PE/CPE/wizard_data/wizards/kds/main.c">
+	             </copyFile>
+            </fileGroup>
+
+            <fileGroup
+                    conditionId="com.processorexpert.condition.projecttype.sdk.oldmanifest">
+	             <copyFile
+                        destinationPath="./Project_Settings/Startup_Code/startup_${SdkPlatformStartup}.S"
+                        fileId="com.processorexpert.projectwizard.startup.s"
+                        sourcePath="${sdk_base_path}/platform/startup/${SdkPlatformStartup}/gcc/startup_${SdkPlatformStartup}.S">
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Project_Settings/Startup_Code/system_${SdkPlatformStartup}.c"
+                        fileId="com.processorexpert.projectwizard.system.c"
+                        sourcePath="${sdk_base_path}/platform/startup/${SdkPlatformStartup}/system_${SdkPlatformStartup}.c">
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Project_Settings/Startup_Code/system_${SdkPlatformStartup}.h"
+                        fileId="com.processorexpert.projectwizard.system.h"
+                        sourcePath="${sdk_base_path}/platform/startup/${SdkPlatformStartup}/system_${SdkPlatformStartup}.h">
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Project_Settings/Startup_Code/startup.c"
+                        fileId="com.processorexpert.projectwizard.startup.c"
+                        sourcePath="${sdk_base_path}/platform/startup/startup.c">
+	             </copyFile>
+	             <copyFile
+                        destinationPath="./Project_Settings/Startup_Code/startup.h"
+                        fileId="com.processorexpert.projectwizard.startup.h"
+                        sourcePath="${sdk_base_path}/platform/startup/startup.h">
+	             </copyFile>
+
+                <copyFile
+                        destinationPath="./Project_Settings/Linker_Files/${SdkLinkerFlash}"
+                        fileId="com.processorexpert.projectwizard.linker.flash"
+                        sourcePath="${sdk_base_path}/platform/linker/gcc/${SdkPlatformLinker}/${SdkLinkerFlash}">
+                </copyFile>
+                <!--copyFile
+                        destinationPath="./Project_Settings/Linker_Files/${SdkLinkerRam}"
+                        fileId="com.processorexpert.projectwizard.linker.ram"
+                        sourcePath="${sdk_base_path}/platform/linker/gcc/${SdkPlatformLinker}/${SdkLinkerRam}">
+                </copyFile-->
+                <copyFile
+                        destinationPath="./Includes/device/fsl_device_registers.h"
+                        fileId="com.processorexpert.projectwizard.fsl_device_registers.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/device/fsl_device_registers.h">
+                </copyFile>
+
+                <copyFile
+                        destinationPath="./Includes/arm_common_tables.h"
+                        fileId="com.processorexpert.projectwizard.sdk.arm_common_tables.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/arm_common_tables.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/arm_const_structs.h"
+                        fileId="com.processorexpert.projectwizard.sdk.arm_const_structs.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/arm_const_structs.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/arm_math.h"
+                        fileId="com.processorexpert.projectwizard.sdk.arm_math.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/arm_math.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cm0plus.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cm0plus.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/core_cm0plus.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cm4.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cm4.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/core_cm4.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cm4_simd.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cm4_simd.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/core_cm4_simd.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cmFunc.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cmFunc.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/core_cmFunc.h">
+                </copyFile>
+                <copyFile
+                        destinationPath="./Includes/core_cmInstr.h"
+                        fileId="com.processorexpert.projectwizard.sdk.core_cmInstr.h"
+                        sourcePath="${sdk_base_path}/platform/CMSIS/Include/core_cmInstr.h">
+                </copyFile>
+            </fileGroup>
+        </projectFiles>
+
+            <configurationFileSets>
+	            <fileSet
+	                  id="com.processorexpert.projectWizard.sdk.files">
+	                  <fileRef
+	                        path="./Sources/main.c">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Startup_Code/startup_${SdkPlatformStartup}.S">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Startup_Code/system_${SdkPlatformStartup}.c">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Startup_Code/system_${SdkPlatformStartup}.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Startup_Code/startup.c">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Startup_Code/startup.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Linker_Files/${SdkLinkerFlash}">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Project_Settings/Linker_Files/${SdkLinkerRam}">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/device/fsl_device_registers.h">
+	                  </fileRef>
+
+	                  <fileRef
+	                        path="./Includes/arm_common_tables.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/arm_const_structs.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/arm_math.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cm0plus.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cm4.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cm4_simd.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cmFunc.h">
+	                  </fileRef>
+	                  <fileRef
+	                        path="./Includes/core_cmInstr.h">
+	                  </fileRef>
+	            </fileSet>
+            </configurationFileSets>
+
+    </newProjectExtension>
+</wizardExtension>
